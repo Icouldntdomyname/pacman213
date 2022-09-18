@@ -5,10 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -16,7 +12,6 @@ import javax.swing.Timer;
 public class Model extends JPanel implements ActionListener {
 
 	private Dimension d;
-    private final Font smallFont = new Font("Arial", Font.BOLD, 14);
     private boolean inGame = false;
     private boolean dying = false;
 
@@ -27,32 +22,32 @@ public class Model extends JPanel implements ActionListener {
     private final int PACMAN_SPEED = 6;
 
     private int N_GHOSTS = 6;
-    private int lives, score;
+    private int lives;
     private int[] dx, dy;
     private int[] ghost_x, ghost_y, ghost_dx, ghost_dy, ghostSpeed;
 
-    private Image heart, ghost;
+    private Image ghost;
     private Image up, down, left, right;
 
     private int pacman_x, pacman_y, pacmand_x, pacmand_y;
     private int req_dx, req_dy;
     
     private final short levelData[] = {
-    	19, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 22,
-        17, 16, 16, 16, 16, 24, 16, 16, 16, 16, 16, 16, 16, 16, 20,
-        25, 24, 24, 24, 28, 0, 17, 16, 16, 16, 16, 16, 16, 16, 20,
-        0,  0,  0,  0,  0,  0, 17, 16, 16, 16, 16, 16, 16, 16, 20,
+    	19, 0, 18, 18, 18, 18, 18, 18, 18, 0, 18, 18, 18, 18, 22,
+        17, 0, 16, 16, 16, 24, 16, 16, 16, 0, 16, 16, 16, 16, 20,
+        25, 24, 24, 24, 28, 0, 17, 16, 16, 0, 16, 16, 16, 16, 20,
+        0,  0,  0,  0,  0,  0, 17, 16, 16, 0, 16, 16, 16, 16, 20,
         19, 18, 18, 18, 18, 18, 16, 16, 16, 16, 24, 24, 24, 24, 20,
-        17, 16, 16, 16, 16, 16, 16, 16, 16, 20, 0,  0,  0,   0, 21,
-        17, 16, 16, 16, 16, 16, 16, 16, 16, 20, 0,  0,  0,   0, 21,
-        17, 16, 16, 16, 24, 16, 16, 16, 16, 20, 0,  0,  0,   0, 21,
-        17, 16, 16, 20, 0, 17, 16, 16, 16, 16, 18, 18, 18, 18, 20,
-        17, 24, 24, 28, 0, 25, 24, 24, 16, 16, 16, 16, 16, 16, 20,
-        21, 0,  0,  0,  0,  0,  0,   0, 17, 16, 16, 16, 16, 16, 20,
-        17, 18, 18, 22, 0, 19, 18, 18, 16, 16, 16, 16, 16, 16, 20,
-        17, 16, 16, 20, 0, 17, 16, 16, 16, 16, 16, 16, 16, 16, 20,
-        17, 16, 16, 20, 0, 17, 16, 16, 16, 16, 16, 16, 16, 16, 20,
-        25, 24, 24, 24, 26, 24, 24, 24, 24, 24, 24, 24, 24, 24, 28
+        17, 16, 16, 16, 16, 16, 16, 0, 0, 20, 0,  0,  0,   0, 21,
+        17, 16, 16, 16, 16, 16, 0, 0, 16, 20, 0,  0,  0,   0, 21,
+        17, 16, 16, 16, 0, 0, 16, 16, 16, 20, 0,  0,  0,   0, 21,
+        17, 16, 16, 20, 0, 17, 16, 16, 16, 16, 18, 18, 0, 18, 20,
+        17, 24, 24, 28, 0, 0, 24, 24, 16, 16, 16, 16, 0, 16, 20,
+        21, 0,  0,  0,  0,  0,  0,   0, 17, 16, 16, 16, 0, 16, 20,
+        17, 18, 0, 22, 0, 19, 18, 18, 16, 16, 16, 16, 0, 16, 20,
+        17, 16, 16, 20, 0, 17, 16, 16, 16, 16, 16, 16, 0, 16, 20,
+        17, 0, 16, 20, 0, 0, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        25, 0, 24, 24, 26, 24, 24, 24, 24, 24, 24, 24, 24, 24, 28
     };
 
     private final int validSpeeds[] = {1, 2, 3, 4, 6, 8};
@@ -88,11 +83,11 @@ public class Model extends JPanel implements ActionListener {
     }
 
     private void loadImages() {
-    	down = new ImageIcon("left.gif").getImage();
-    	up = new ImageIcon("left.gif").getImage();
-    	left = new ImageIcon("left.gif").getImage();
-    	right = new ImageIcon("left.gif").getImage();
-
+    	down = new ImageIcon("C:/Users/piney/Downloads/down.gif").getImage();
+    	up = new ImageIcon("C:/Users/piney/Downloads/up.gif").getImage();
+    	left = new ImageIcon("C:/Users/piney/Downloads/left.gif").getImage();
+    	right = new ImageIcon("C:/Users/piney/Downloads/right.gif").getImage();
+        ghost = new ImageIcon("C:/Users/piney/Downloads/ghost.gif").getImage();
     }
 
     private void playGame(Graphics2D g2d) {
@@ -110,12 +105,7 @@ public class Model extends JPanel implements ActionListener {
         }
     }
 
-    private void showIntroScreen(Graphics2D g2d) {
- 
-    	String start = "Press SPACE to start";
-        g2d.setColor(Color.yellow);
-        g2d.drawString(start, (SCREEN_SIZE)/4, 150);
-    }
+
 
     private void checkMaze() {
 
@@ -132,8 +122,6 @@ public class Model extends JPanel implements ActionListener {
         }
 
         if (finished) {
-
-            score += 50;
 
             if (N_GHOSTS < MAX_GHOSTS) {
                 N_GHOSTS++;
@@ -245,7 +233,6 @@ public class Model extends JPanel implements ActionListener {
 
             if ((ch & 16) != 0) {
                 screenData[pos] = (short) (ch & 15);
-                score++;
             }
 
             if (req_dx != 0 || req_dy != 0) {
@@ -273,7 +260,6 @@ public class Model extends JPanel implements ActionListener {
     private void drawPacman(Graphics2D g2d) {
         
         if (req_dx == -1) {
-            System.out.println("left");
         	g2d.drawImage(left, pacman_x + 1, pacman_y + 1, this);
         } else if (req_dx == 1) {
         	g2d.drawImage(right, pacman_x + 1, pacman_y + 1, this);
@@ -330,7 +316,6 @@ public class Model extends JPanel implements ActionListener {
     private void initGame() {
 
     	lives = 3;
-        score = 0;
         initLevel();
         N_GHOSTS = 6;
         currentSpeed = 3;
@@ -389,8 +374,6 @@ public class Model extends JPanel implements ActionListener {
 
         if (inGame) {
             playGame(g2d);
-        } else {
-            showIntroScreen(g2d);
         }
 
         Toolkit.getDefaultToolkit().sync();
